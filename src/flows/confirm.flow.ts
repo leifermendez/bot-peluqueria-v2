@@ -3,6 +3,7 @@ import AIClass from "../services/ai";
 import { clearHistory, handleHistory, getHistoryParse } from "../utils/handleHistory";
 import { getFullCurrentDate } from "../utils/currentDate";
 import { appToCalendar } from "src/services/calendar";
+import muteLayer from "src/layers/mute.layer";
 
 const generatePromptToFormatDate = (history: string) => {
     const prompt = `Current date: ${getFullCurrentDate()}, Given conversation history: 
@@ -32,7 +33,9 @@ const generateJsonParse = (info: string) => {
 /**
  * Encargado de pedir los datos necesarios para registrar el evento en el calendario
  */
-const flowConfirm = addKeyword(EVENTS.ACTION).addAction(async (_, { flowDynamic }) => {
+const flowConfirm = addKeyword(EVENTS.ACTION)
+.addAction(muteLayer)
+.addAction(async (_, { flowDynamic }) => {
     await flowDynamic('Ok, voy a pedirte unos datos para agendar')
     await flowDynamic('¿Cual es tu nombre?')
 }).addAction({ capture: true }, async (ctx, { state, flowDynamic, extensions }) => {

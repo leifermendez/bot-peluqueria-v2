@@ -4,6 +4,7 @@ import { getHistoryParse, handleHistory } from "../utils/handleHistory";
 import { generateTimer } from "../utils/generateTimer";
 import { getCurrentCalendar } from "../services/calendar";
 import { getFullCurrentDate } from "src/utils/currentDate";
+import muteLayer from "src/layers/mute.layer";
 
 const PROMPT_SCHEDULE = `As an artificial intelligence engineer specializing in meeting scheduling, your goal is to analyze the conversation and determine the client's intention to schedule a meeting, as well as their preferred date and time.
 
@@ -44,7 +45,9 @@ const generateSchedulePrompt = (summary: string, history: string) => {
 /**
  * Hable sobre todo lo referente a agendar citas, revisar historial saber si existe huecos disponibles
  */
-const flowSchedule = addKeyword(EVENTS.ACTION).addAction(async (ctx, { extensions, state, flowDynamic }) => {
+const flowSchedule = addKeyword(EVENTS.ACTION)
+.addAction(muteLayer)
+.addAction(async (ctx, { extensions, state, flowDynamic }) => {
     await flowDynamic('dame un momento para consultar la agenda...')
     const ai = extensions.ai as AIClass
     const history = getHistoryParse(state)
