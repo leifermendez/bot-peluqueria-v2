@@ -33,7 +33,7 @@ export default async (_: BotContext, { state, gotoFlow, extensions }: BotMethods
             role: 'system',
             content: prompt.replace('{HISTORY}', history)
         }
-    ], 'gpt-4-0613')
+    ], 'gpt-4')
 
 
     console.log(`[Intention]:`, intention)
